@@ -10,8 +10,25 @@ import { connect } from 'react-redux';
 //we wish to wrap
 export default function(ComposedComponent){
   class Authentication extends Component{
+    static contextTypes = {
+      router: React.PropTypes.object
+    }
+
+    //primes component to run on
+    //the DOM
+    componentWillMount(){
+      if(!this.props.authenticated){
+        this.context.router.push('/');
+      }
+    }
+    //when component will be re-rendered
+    componentWillUpdate(nextProps){
+      if(!nextProps.authenticated){
+        this.context.router.push("/");
+      }
+    }
+
     render(){
-      console.log(this.props.authenticated);
       return <ComposedComponent {...this.props}/>
     }
   }
